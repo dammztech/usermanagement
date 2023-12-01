@@ -1,21 +1,12 @@
-# main.py
+# app/main.py
 
 from fastapi import FastAPI
-from api import user, auth
-from db.base import Base, engine
+from api import api_router
+from core.config import settings
 
-# Create the FastAPI app
-app = FastAPI()
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+)
 
-# Include routers from the api module
-app.include_router(user.router, prefix="/users", tags=["users"])
-app.include_router(auth.router, tags=["auth"])
-
-# Create tables in the database
-Base.metadata.create_all(bind=engine)
-
-if __name__ == "__main__":
-    import uvicorn
-
-    # Run the FastAPI app with Uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+app.include_router(api_router, prefix=settings.API_V1_STR)

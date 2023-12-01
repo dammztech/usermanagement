@@ -1,9 +1,10 @@
 # app/models/token.py
 
+from pydantic import BaseModel
 from typing import Union
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from app.core.config import settings
+from core.config import settings
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 
